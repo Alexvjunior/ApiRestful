@@ -1,5 +1,5 @@
 version ?= latest
-NAMEIMAGE=spider
+NAMEIMAGE=app
 
 guard-%:
 	@ if [ "${${*}}" = "" ]; then \

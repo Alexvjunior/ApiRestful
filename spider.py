@@ -11,6 +11,7 @@ class Spider():
         self.email_send = Email()
 
     def start_crawling(self):
+        print('COMEÇOU')
         response = requests.get(
             url=self._URL_MASTER
         )

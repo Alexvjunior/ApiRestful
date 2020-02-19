@@ -1,5 +1,5 @@
 import requests
-from parser import Parser
+from passagens_imperdiveis.parser import Parser
 from emailPromo import Email
 
 

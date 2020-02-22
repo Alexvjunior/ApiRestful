@@ -4,7 +4,10 @@ from emailPromo import Email
 
 
 class Spider():
-    _URL_MASTER = 'https://www.passagensimperdiveis.com.br/categoria/estados-unidos'
+    _URL_MASTER = [
+        'https://www.passagensimperdiveis.com.br/categoria/europa/',
+        'https://www.passagensimperdiveis.com.br/categoria/estados-unidos/'
+    ]
 
     def __init__(self):
         self.parser = Parser()
@@ -12,12 +15,15 @@ class Spider():
 
     def start_crawling(self):
         print('COMEÇOU')
-        response = requests.get(
-            url=self._URL_MASTER
-        )
-
-        urls = self.parser.find_urls(response)
-        self._request_promocao_passagem(urls)
+        response = []
+        for url_get in self._URL_MASTER:
+            response = requests.get(
+                url=url_get
+            )
+            urls = self.parser.find_urls(response)
+            self._request_promocao_passagem(urls)
+        print("FINALIZADO")
+        
 
     def _request_promocao_passagem(self, urls):
         responses = []

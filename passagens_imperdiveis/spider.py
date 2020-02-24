@@ -14,7 +14,6 @@ class Spider():
         self.email_send = Email()
 
     def start_crawling(self):
-        print('COMEÇOU')
         response = []
         for url_get in self._URL_MASTER:
             response = requests.get(
@@ -22,7 +21,6 @@ class Spider():
             )
             urls = self.parser.find_urls(response)
             self._request_promocao_passagem(urls)
-        print("FINALIZADO")
         
 
     def _request_promocao_passagem(self, urls):

@@ -5,25 +5,18 @@ import json
 
 
 class Spider():
-    _BASE_URL = [
-        'https://passagensaereas.melhoresdestinos.com.br/promocoes?page=1',
-        'https://passagensaereas.melhoresdestinos.com.br/promocoes?page=2',
-        'https://passagensaereas.melhoresdestinos.com.br/promocoes?page=3',
-    ]
+    _BASE_URL = 'https://passagensaereas.melhoresdestinos.com.br/promocoes'
 
     def __init__(self):
         self.parser = parser.Parser()
         self.email_send = Email()
 
     def start_crawling(self):
-        response = []
-        for url_crawling in self._BASE_URL:
-            response = requests.get(
-                url=url_crawling,
-                headers=static.HEADERS
-            )
-            self._requests_for_urls(self.parser.get_urls_destinos(response))
-
+        response = requests.get(
+            url=self._BASE_URL,
+            headers=static.HEADERS
+        )
+        self._requests_for_urls(self.parser.get_urls_destinos(response))
 
     def _requests_for_urls(self, urls):
         send = []
@@ -42,7 +35,6 @@ class Spider():
 
         if len(send) != 0:
             self.email_send.send_email(send)
-            
 
     def _requests_for_keys(self, key):
         response = (requests.get(

@@ -17,11 +17,13 @@ HEADERS = {
 }
 
 COUTRYS = [
-    "Europa",
-    "Estados Unidos",
-    "Itália",
-    "Orlando",
-    "Portugal"
+    "EUROPA",
+    "ESTADOS UNIDOS",
+    "ITÁLIA",
+    "ORLANDO",
+    "PORTUGAL",
+    "FRANÇA",
+    "ESPANHA"
 ]
 
 CITYS = {

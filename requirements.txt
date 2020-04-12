@@ -1,3 +1,4 @@
-requests
-bs4
-lxml
+Flask
+Flask-Restful
+Flask-SQLAlchemy
+Flask-JWT-Extended

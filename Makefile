@@ -11,5 +11,5 @@ image:
 	docker build -t $(NAMEIMAGE) .
 
 check: image
-	docker run $(NAMEIMAGE)
+	docker run -d -p 5000:5000 --name app_container $(NAMEIMAGE)
 

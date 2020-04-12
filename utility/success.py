@@ -1,0 +1,1 @@
+_DELETED = {"message": "hotel deleted"}

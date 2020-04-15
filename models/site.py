@@ -29,5 +29,10 @@ class SiteModel(banco.Model):
         self.save_hotel()
 
     def delete(self):
+        [hotel.delete_hotel() for hotel in self.hoteis]
         banco.session.delete(self)
         banco.session.commit()
+
+    @classmethod
+    def find_by_id(cls, site_id):
+        return cls.query.filter_by(site_id=site_id).first()

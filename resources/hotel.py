@@ -1,8 +1,10 @@
 from flask_restful import Resource, reqparse
 from models.hotel import HotelModel
+from models.site import SiteModel
 from utility import errors, success, server_code
 from flask_jwt_extended import jwt_required
 import sqlite3
+from resources import filters
 
 
 class Hoteis(Resource):
@@ -22,9 +24,9 @@ class Hoteis(Resource):
         dados = self.path_params.parse_args()
         dados_valids = {chave: valor for chave,
                         valor in dados.items() if valor is not None}
-        params = self.normalize_path_params(**dados_valids)
+        params = filters.normalize_path_params(**dados_valids)
         tupla = tuple([value for value in params.values()])
-        consulta = self.create_sql(**params)
+        consulta = filters.create_sql(**params)
         result = cursor.execute(consulta, tupla)
         hoteis = []
         for hotel in result:
@@ -34,35 +36,10 @@ class Hoteis(Resource):
                 "estrelas":hotel[2],
                 "diaria":hotel[3],
                 "cidade":hotel[4],
+                "site_id":hotel[5],
             })
         return {'hoteis':hoteis}, server_code.OK
 
-    def create_sql(self, **kwargs):
-        if kwargs.get('cidade') is None:
-            return "SELECT * FROM hoteis \
-                WHERE (estrelas >= ? AND estrelas <= ?)\
-                    AND (diaria > ? AND diaria <= ?)\
-                        LIMIT ? OFFSET ?"
-        return "SELECT * FROM hoteis \
-                WHERE cidade = ?\
-                    AND (estrelas >= ? AND estrelas <= ?)\
-                    AND (diaria > ? AND diaria <= ?)\
-                        LIMIT ? OFFSET ?"
-
-    def normalize_path_params(self, cidade=None, estrelas_min=0, estrelas_max=5, diaria_min=0, diaria_max=10000, limit=50, offset=0, **kwargs):
-        result = {
-            "cidade": cidade,
-            "estrelas_min": estrelas_min,
-            "estrelas_max": estrelas_max,
-            "diaria_min": diaria_min,
-            "diaria_max": diaria_max,
-            "limit": limit,
-            "offset": offset
-        }
-        if cidade is None:
-            del(result['cidade'])
-
-        return result
 
 
 class Hotel(Resource):
@@ -72,6 +49,7 @@ class Hotel(Resource):
     argumentos.add_argument('estrelas', type=float)
     argumentos.add_argument('diaria', type=float)
     argumentos.add_argument('cidade', type=str)
+    argumentos.add_argument('site_id', type=int, required=True)
 
     def get(self, hotel_id):
         hotel = HotelModel.find_hotel(hotel_id)
@@ -85,6 +63,8 @@ class Hotel(Resource):
             return errors._EXISTENT, server_code.BAD_REQUEST
         dados = self.argumentos.parse_args()
         hotel = HotelModel(hotel_id, **dados)
+        if SiteModel.find_by_id(hotel.site_id) is None:
+            return errors._NOT_FOUND, server_code.NOT_FOUND
         try:
             hotel.save_hotel()
         except:

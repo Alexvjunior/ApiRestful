@@ -1,1 +1,2 @@
-_DELETED = {"message": "hotel deleted"}
+_DELETED = {"message": "Deleted"}
+_SAVE = {'message':"Saved with success"}

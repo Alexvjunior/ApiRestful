@@ -4,6 +4,7 @@ from utility import errors, success, server_code
 from flask_jwt_extended import create_access_token, jwt_required, get_raw_jwt
 from blacklist import BLACKLIST
 import traceback
+from flask import make_response, render_template
 
 _ARGUMENTOS = reqparse.RequestParser()
 _ARGUMENTOS.add_argument('login', type=str, required=True,
@@ -87,6 +88,7 @@ class UserConfirm(Resource):
         user.ativado = True
         try:
             user.save()
-            return success._SAVE, server_code.OK
+            headers = {"Content-Type":"text/html"}
+            return make_response(render_template('confirm.html', email=user.email, login=user.login), 200, headers)
         except:
             return errors._SAVE_ERROR, server_code.INTERNAL_SERVER_ERROR

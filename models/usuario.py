@@ -3,8 +3,8 @@ from flask import request, url_for
 from requests import post
 class UsuarioModel(banco.Model):
     __tablename__ = 'usuario'
-    __API_KEY = 'a8c7e4aef21d0dfb83e1230189b53cd4-915161b7-d027a0c6'
-    __MAIL_GUN = 'sandbox20f460aba6be45189d2b959ee0fa547a.mailgun.org'
+    __API_KEY = '7644cf468d58a38c49c7de945cd8b7d7-f135b0f1-0a2e4de9'
+    __MAIL_GUN = 'sandbox0e86c238eda544aebc646476abfcf410.mailgun.org'
     __FROM_TITLE = 'NO-REPLY'
     __FROM_EMAIL = 'no-reply@restapi.com'
 
